@@ -1,0 +1,11 @@
+#ifndef LABYRINTHGENERATOR_GRID_H
+#define LABYRINTHGENERATOR_GRID_H
+
+
+class Grid
+{
+
+};
+
+
+#endif //LABYRINTHGENERATOR_GRID_H
