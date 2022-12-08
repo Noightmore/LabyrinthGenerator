@@ -1,13 +1,19 @@
+#pragma clang diagnostic push
+#pragma ide diagnostic ignored "cert-msc51-cpp"
 #include <iostream>
 
 
-int main()
+int main(int argc, char** argv)
 {
-    //std::cout << "Hello, World!" << std::endl;
-    // call rnd_rnd_by_seed function
-    //auto val = rnd_by_seed(12);
-    //printf("val = %llu", val);
-    srand(13); // seed the random number generator
+    int * width = new int(std::stoi(argv[1]));
+    int * height = new int(std::stoi(argv[2]));
+    int * seed = new int(std::stoi(argv[3]));
+
+    std::cout << "Width: " << *width << std::endl;
+    std::cout << "Height: " << *height << std::endl;
+    std::cout << "seed: " << *seed << std::endl;
+
+    srand(* seed); // seed the random number generator
     // generate random number between 0 and 5
     int random_variable = rand() % 6;
     // print seed values
@@ -20,3 +26,5 @@ int main()
     std::cout << random_variable << std::endl;
     return 0;
 }
+
+#pragma clang diagnostic pop
