@@ -26,6 +26,9 @@ public:
     ~Grid();
     char getGridData_ByRowAndColIndex(const int *row, const int *col);
     char getTileData_ByTileId(const int *tileId);
+    int getCompatibleTileId(const int *rowId, const int *colId);
+    static bool checkTopCompatibility(const char *topTileData, const char *currentTileData);
+    static bool checkLeftCompatibility(const char *leftTileData, const char *currentTileData);
     void printGrid();
 
 
