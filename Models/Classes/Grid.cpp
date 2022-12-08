@@ -126,8 +126,6 @@ int Grid::getCompatibleTileId(const int *const rowId, const int *const colId)
         }
         return random_variable;
     }
-
-
 }
 
 bool Grid::checkTopCompatibility(const char *const topTileData, const char *const currentTileData)
