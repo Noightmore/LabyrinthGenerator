@@ -8,9 +8,8 @@ private:
     int *width;
     int *height;
     int *seed;
-    // pointer to 2D array of char pointers
-    char ****grid;
-    // zadny strach, to je pointer na 2D pole pointeru na 1D pole char pointeru
+    char ****grid; // zadny strach, to je pointer na 2D pole pointeru na 1D pole char pointeru
+
     char tileData[6] = {
             0x0F, // byte representation of the first tile: 0b0000_1111
             0x02, // byte representation of the second tile: 0b0000_0010

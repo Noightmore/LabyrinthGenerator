@@ -50,14 +50,14 @@ char Grid::getTileData_ByTileId(const int *tileId)
 void Grid::fillGrid_WithTileData()
 {
     srand(*this->seed); // seed the random number generator
-    for (int i = 0; i < *this->height; i++)
+    for (int rowId = 0; rowId < *this->height; rowId++)
     {
-        for (int j = 0; j < *this->width; j++)
+        for (int colId = 0; colId < *this->width; colId++)
         {
             // generate random number between 0 and 5
-            int random_variable = rand() % 6;
+            int random_variable = rand() % sizeof(this->tileData);
             // assign the random number to the grid
-            this->grid[i][j][0] =
+            this->grid[rowId][colId][0] =
                      &this->tileData[random_variable];
         }
     }
