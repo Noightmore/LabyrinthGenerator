@@ -8,8 +8,10 @@ private:
     int *width;
     int *height;
     int *seed;
-    char ****grid; // zadny strach, to je pointer na 2D pole pointeru na 1D pole char pointeru
-    const char tileData[6] = {
+    // pointer to 2D array of char pointers
+    char ****grid;
+    // zadny strach, to je pointer na 2D pole pointeru na 1D pole char pointeru
+    char tileData[6] = {
             0x0F, // byte representation of the first tile: 0b0000_1111
             0x02, // byte representation of the second tile: 0b0000_0010
             0x06, // byte representation of the third tile: 0b0000_0110
@@ -25,6 +27,8 @@ public:
     ~Grid();
     char getGridData_ByRowAndColIndex(const int *row, const int *col);
     char getTileData_ByTileId(const int *tileId);
+    void printGrid();
+
 
 };
 
