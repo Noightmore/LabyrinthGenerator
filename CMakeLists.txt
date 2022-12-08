@@ -3,8 +3,8 @@ project(LabyrinthGenerator)
 
 set(CMAKE_CXX_STANDARD 23)
 #enable_language(ASM_NASM)
-set(NASM_COMPILER nasm)
-set(CMAKE_ASM_NASM_OBJECT_FORMAT elf64)
+#set(NASM_COMPILER nasm)
+#set(CMAKE_ASM_NASM_OBJECT_FORMAT elf64)
 set(CMAKE_ASM_NASM_COMPILE_OBJECT "<CMAKE_ASM_NASM_COMPILER> <INCLUDES> <FLAGS> -f ${CMAKE_ASM_NASM_OBJECT_FORMAT}  -o <OBJECT> <SOURCE>")
 #set_source_files_properties(Tools/rnd_by_seed.asm PROPERTIES LANGUAGE ASM_NASM)
 
