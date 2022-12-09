@@ -8,30 +8,14 @@ Grid::Grid(int *const width, int *const height, int *const seed)
     this->width = width;
     this->height = height;
     this->seed = seed;
-    this->grid = new char ***[*height];
-    for (int i = 0; i < *height; i++)
-    {
-        this->grid[i] = new char **[*width];
-        for (int j = 0; j < *width; j++)
-        {
-            this->grid[i][j] = new char *[1];
-            this->grid[i][j][0] = nullptr;
-        }
-    }
+    this->grid = new char **[*height];
+    this->allocateGrid();
     this->fillGrid_WithTileData();
 }
 
 Grid::~Grid()
 {
-    for (int i = 0; i < *this->height; i++)
-    {
-        for (int j = 0; j < *this->width; j++)
-        {
-            delete[] this->grid[i][j];
-        }
-        delete[] this->grid[i];
-    }
-    delete[] this->grid;
+    this->deallocateGrid();
     delete this->width;
     delete this->height;
     delete this->seed;
@@ -39,10 +23,10 @@ Grid::~Grid()
 
 char Grid::getGridData_ByRowAndColIndex(const int *const row, const int *const col)
 {
-    return *this->grid[*row][*col][0];
+    return *this->grid[*row][*col];
 }
 
-char Grid::getTileData_ByTileId(const int *tileId)
+[[maybe_unused]] char Grid::getTileData_ByTileId(const int *tileId)
 {
     return this->tileData[*tileId];
 }
@@ -57,7 +41,7 @@ void Grid::fillGrid_WithTileData()
             // generate random number between 0 and 5
             auto tile_id = getCompatibleTileId(&rowId, &colId);
             // assign the random number to the grid
-            this->grid[rowId][colId][0] =
+            this->grid[rowId][colId] =
                      &this->tileData[tile_id];
         }
     }
@@ -155,4 +139,29 @@ bool Grid::checkLeftCompatibility(const char *const leftTileData, const char *co
 
     auto result = masked_left_tile_data == masked_current_tile_data;
     return result;
+}
+
+void Grid::allocateGrid()
+{
+    for (int i = 0; i < *this->height; i++)
+    {
+        this->grid[i] = new char *[*this->width];
+        for (int j = 0; j < *this->width; j++)
+        {
+            this->grid[i][j] = nullptr;
+        }
+    }
+}
+
+void Grid::deallocateGrid()
+{
+    for (int i = 0; i < *this->height; i++)
+    {
+        for (int j = 0; j < *this->width; j++)
+        {
+            delete[] this->grid[i][j];
+        }
+        delete[] this->grid[i];
+    }
+    delete[] this->grid;
 }
