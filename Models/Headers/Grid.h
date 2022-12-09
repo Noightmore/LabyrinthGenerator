@@ -19,9 +19,8 @@ private:
             0x09, // byte representation of the fifth tile: 0b0000_1001
             0x05 // byte representation of the sixth tile: 0b0000_0101
     };
-    void allocateGrid();
+    void allocateAndFill();
     void deallocateGrid();
-    void fillGrid_WithTileData();
 
 public:
     Grid(int *width, int *height, int *seed);
@@ -35,6 +34,5 @@ public:
 
 
 };
-
 
 #endif //LABYRINTHGENERATOR_GRID_H

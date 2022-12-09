@@ -4,7 +4,7 @@
 #include "Models/Headers/Grid.h"
 
 
-int main(int argc, char** argv)
+int main([[maybe_unused]] int argc, char** argv)
 {
     int * width = new int(std::stoi(argv[1]));
     int * height = new int(std::stoi(argv[2]));
@@ -16,6 +16,7 @@ int main(int argc, char** argv)
 
     Grid * grid = new Grid(width, height, seed);
     grid->printGrid();
+    grid->~Grid();
     return 0;
 }
 

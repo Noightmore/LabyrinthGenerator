@@ -9,8 +9,7 @@ Grid::Grid(int *const width, int *const height, int *const seed)
     this->height = height;
     this->seed = seed;
     this->grid = new char **[*height];
-    this->allocateGrid();
-    this->fillGrid_WithTileData();
+    this->allocateAndFill();
 }
 
 Grid::~Grid()
@@ -31,18 +30,16 @@ char Grid::getGridData_ByRowAndColIndex(const int *const row, const int *const c
     return this->tileData[*tileId];
 }
 
-void Grid::fillGrid_WithTileData()
+void Grid::allocateAndFill()
 {
     srand(*this->seed); // seed the random number generator
     for (int rowId = 0; rowId < *this->height; rowId++)
     {
+        this->grid[rowId] = new char *[*this->width];
         for (int colId = 0; colId < *this->width; colId++)
         {
-            // generate random number between 0 and 5
             auto tile_id = getCompatibleTileId(&rowId, &colId);
-            // assign the random number to the grid
-            this->grid[rowId][colId] =
-                     &this->tileData[tile_id];
+            this->grid[rowId][colId] = &this->tileData[tile_id];
         }
     }
 }
@@ -114,7 +111,7 @@ int Grid::getCompatibleTileId(const int *const rowId, const int *const colId)
 
 bool Grid::checkTopCompatibility(const char *const topTileData, const char *const currentTileData)
 {
-    const char topTileDataMask = 0b00000100;
+    const char topTileDataMask = 0b00000100; // 4
     // bit shift left the top tile data by 2 bits
     // to align the bit representing the bottom pointing arrow of the top tile
     // with the bit representing the top pointing arrow of the current tile
@@ -131,7 +128,7 @@ bool Grid::checkTopCompatibility(const char *const topTileData, const char *cons
 
 bool Grid::checkLeftCompatibility(const char *const leftTileData, const char *const currentTileData)
 {
-    const char leftTileDataMask = 0b00001000;
+    const char leftTileDataMask = 0b00001000; // 8
 
     auto shifted_left_tile_data = *leftTileData << 2;
     auto masked_left_tile_data = shifted_left_tile_data & leftTileDataMask;
@@ -141,26 +138,10 @@ bool Grid::checkLeftCompatibility(const char *const leftTileData, const char *co
     return result;
 }
 
-void Grid::allocateGrid()
-{
-    for (int i = 0; i < *this->height; i++)
-    {
-        this->grid[i] = new char *[*this->width];
-        for (int j = 0; j < *this->width; j++)
-        {
-            this->grid[i][j] = nullptr;
-        }
-    }
-}
-
 void Grid::deallocateGrid()
 {
     for (int i = 0; i < *this->height; i++)
     {
-        for (int j = 0; j < *this->width; j++)
-        {
-            delete[] this->grid[i][j];
-        }
         delete[] this->grid[i];
     }
     delete[] this->grid;
