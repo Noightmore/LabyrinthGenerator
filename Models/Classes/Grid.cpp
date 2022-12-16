@@ -2,6 +2,8 @@
 #include <iostream>
 #include "../Headers/Grid.h"
 
+#define TOP_TILE_MASK 0b00000100
+#define LEFT_TILE_MASK 0b00001000
 
 Grid::Grid(int *const width, int *const height, int *const seed)
 {
@@ -20,16 +22,6 @@ Grid::~Grid()
     delete this->seed;
 }
 
-char Grid::getGridData_ByRowAndColIndex(const int *const row, const int *const col)
-{
-    return *this->grid[*row][*col];
-}
-
-[[maybe_unused]] char Grid::getTileData_ByTileId(const int *tileId)
-{
-    return this->tileData[*tileId];
-}
-
 void Grid::allocateAndFill()
 {
     srand(*this->seed); // seed the random number generator
@@ -44,22 +36,29 @@ void Grid::allocateAndFill()
     }
 }
 
-// THIS METHOD IS FOR DEBUGGING PURPOSES ONLY
-void Grid::printGrid()
+void Grid::deallocateGrid()
 {
     for (int i = 0; i < *this->height; i++)
     {
-        for (int j = 0; j < *this->width; j++)
-        {
-            std::cout << std::hex << (int) this->getGridData_ByRowAndColIndex(&i, &j) << " ";
-        }
-        std::cout << std::endl;
+        delete[] this->grid[i];
     }
+    delete[] this->grid;
+}
+
+char Grid::getGridData_ByRowAndColIndex(const int *const row, const int *const col)
+{
+    return *this->grid[*row][*col];
+}
+
+[[maybe_unused]] char Grid::getTileData_ByTileId(const int *tileId)
+{
+    return this->tileData[*tileId];
 }
 
 int Grid::getCompatibleTileId(const int *const rowId, const int *const colId)
 {
     int random_variable = rand() % sizeof(this->tileData);
+
     if(*colId == 0 && *rowId == 0)
     {
         // if colId is 0, and the rowId is 0, then the tile is in the top left corner,
@@ -109,40 +108,42 @@ int Grid::getCompatibleTileId(const int *const rowId, const int *const colId)
     }
 }
 
+
+
 bool Grid::checkTopCompatibility(const char *const topTileData, const char *const currentTileData)
 {
-    const char topTileDataMask = 0b00000100; // 4
     // bit shift left the top tile data by 2 bits
     // to align the bit representing the bottom pointing arrow of the top tile
     // with the bit representing the top pointing arrow of the current tile
     auto shifted_top_tile_data = *topTileData << 2;
 
     // mask out all the bytes but those representing the arrows pointing towards each other
-    auto masked_top_tile_data = shifted_top_tile_data & topTileDataMask;
-    auto masked_current_tile_data = *currentTileData & topTileDataMask;
+    auto masked_top_tile_data = shifted_top_tile_data & TOP_TILE_MASK;
+    auto masked_current_tile_data = *currentTileData & TOP_TILE_MASK;
 
     auto result = masked_top_tile_data == masked_current_tile_data;
-
     return result; // returns the existence of the connection
 }
 
 bool Grid::checkLeftCompatibility(const char *const leftTileData, const char *const currentTileData)
 {
-    const char leftTileDataMask = 0b00001000; // 8
-
     auto shifted_left_tile_data = *leftTileData << 2;
-    auto masked_left_tile_data = shifted_left_tile_data & leftTileDataMask;
-    auto masked_current_tile_data = *currentTileData & leftTileDataMask;
+    auto masked_left_tile_data = shifted_left_tile_data & LEFT_TILE_MASK;
+    auto masked_current_tile_data = *currentTileData & LEFT_TILE_MASK;
 
     auto result = masked_left_tile_data == masked_current_tile_data;
     return result;
 }
 
-void Grid::deallocateGrid()
+// THIS METHOD IS FOR DEBUGGING PURPOSES ONLY
+void Grid::printGrid()
 {
     for (int i = 0; i < *this->height; i++)
     {
-        delete[] this->grid[i];
+        for (int j = 0; j < *this->width; j++)
+        {
+            std::cout << std::hex << (int) this->getGridData_ByRowAndColIndex(&i, &j) << " ";
+        }
+        std::cout << std::endl;
     }
-    delete[] this->grid;
 }

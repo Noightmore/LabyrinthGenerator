@@ -6,6 +6,7 @@ class Grid
 {
 
 private:
+
     int *width;
     int *height;
     int *seed;
@@ -21,15 +22,16 @@ private:
     };
     void allocateAndFill();
     void deallocateGrid();
+    static bool checkTopCompatibility(const char *topTileData, const char *currentTileData);
+    static bool checkLeftCompatibility(const char *leftTileData, const char *currentTileData);
+    int getCompatibleTileId(const int *rowId, const int *colId);
 
 public:
+
     Grid(int *width, int *height, int *seed);
     ~Grid();
     char getGridData_ByRowAndColIndex(const int *row, const int *col);
     [[maybe_unused]] char getTileData_ByTileId(const int *tileId);
-    int getCompatibleTileId(const int *rowId, const int *colId);
-    static bool checkTopCompatibility(const char *topTileData, const char *currentTileData);
-    static bool checkLeftCompatibility(const char *leftTileData, const char *currentTileData);
     void printGrid();
 
 
