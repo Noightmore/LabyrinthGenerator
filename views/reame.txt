@@ -1,0 +1,1 @@
+aplikace by mela dodrzovat mvc navrhovy vzor

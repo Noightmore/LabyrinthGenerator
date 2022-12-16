@@ -1,0 +1,1 @@
+prosim, aplikace by mela mit controller
