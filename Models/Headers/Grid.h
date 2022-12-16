@@ -28,7 +28,7 @@ private:
 
 public:
 
-    Grid(int *width, int *height, int *seed);
+    Grid(const int *width, const int *height, const int *seed);
     ~Grid();
     char getGridData_ByRowAndColIndex(const int *row, const int *col);
     [[maybe_unused]] char getTileData_ByTileId(const int *tileId);

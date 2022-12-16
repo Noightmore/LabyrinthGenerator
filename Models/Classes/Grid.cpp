@@ -5,11 +5,12 @@
 #define TOP_TILE_MASK 0b00000100
 #define LEFT_TILE_MASK 0b00001000
 
-Grid::Grid(int *const width, int *const height, int *const seed)
+Grid::Grid(const int *const width, const int *const height, const int *const seed)
 {
-    this->width = width;
-    this->height = height;
-    this->seed = seed;
+    // copy stuff over on the heap
+    this->width = new int(*width);
+    this->height = new int(*height);
+    this->seed = new int(*seed);
     this->grid = new char **[*height];
     this->allocateAndFill();
 }
@@ -38,9 +39,9 @@ void Grid::allocateAndFill()
 
 void Grid::deallocateGrid()
 {
-    for (int i = 0; i < *this->height; i++)
+    for (int rowId = 0; rowId < *this->height; rowId++)
     {
-        delete[] this->grid[i];
+        delete[] this->grid[rowId];
     }
     delete[] this->grid;
 }
@@ -59,6 +60,8 @@ int Grid::getCompatibleTileId(const int *const rowId, const int *const colId)
 {
     int random_variable = rand() % sizeof(this->tileData);
 
+    // refactor this into using switch statement
+
     if(*colId == 0 && *rowId == 0)
     {
         // if colId is 0, and the rowId is 0, then the tile is in the top left corner,
@@ -67,7 +70,7 @@ int Grid::getCompatibleTileId(const int *const rowId, const int *const colId)
     }
 
     // if colId is 0, then the tile is in the first column, and we need to check the tile above it
-    if(*colId == 0 && *rowId != 0)
+    else if(*colId == 0 && *rowId != 0)
     {
         auto tile_above_rowId = *rowId - 1;
         auto tile_above = getGridData_ByRowAndColIndex(&tile_above_rowId, colId);
@@ -80,7 +83,7 @@ int Grid::getCompatibleTileId(const int *const rowId, const int *const colId)
     }
 
     // first row case
-    if(*rowId == 0 && *colId != 0)
+    else if(*rowId == 0 && *colId != 0)
     {
         auto tile_left_colId = *colId - 1;
         auto tile_left = getGridData_ByRowAndColIndex(rowId, &tile_left_colId);
@@ -92,7 +95,8 @@ int Grid::getCompatibleTileId(const int *const rowId, const int *const colId)
         return random_variable;
     }
 
-    if(*rowId != 0 && *colId != 0)
+    // any other row case
+    else if(*rowId != 0 && *colId != 0)
     {
         auto tile_above_rowId = *rowId - 1;
         auto tile_above = getGridData_ByRowAndColIndex(&tile_above_rowId, colId);
