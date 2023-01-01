@@ -12,7 +12,7 @@
 #include <vector>
 
 //QT_BEGIN_NAMESPACE
-//namespace Ui { class MainWindow; }
+namespace Ui { class MainWindow; }
 //QT_END_NAMESPACE
 
 class MainWindow : public QMainWindow
@@ -22,14 +22,14 @@ class MainWindow : public QMainWindow
     Grid * grid;
     QGraphicsPixmapItem background;
     std::vector<QGraphicsPixmapItem*> obrazky;
-    QGraphicsPixmapItem *obrazek;
+    //QGraphicsPixmapItem *obrazek;
     Q_OBJECT
 
 public:
-    MainWindow(QWidget *parent = nullptr);
-    ~MainWindow();
+    explicit MainWindow(QWidget *parent = Q_NULLPTR);
+    ~MainWindow() override;
     QHBoxLayout *layout;
-
 private:
+    Ui::MainWindow *ui;
 };
 //#endif // MAINWINDOW_H

@@ -2,7 +2,7 @@
 #include <iostream>
 #include "../Headers/Grid.h"
 
-#define TOP_TILE_MASK 0b00000100
+#define TOP_TILE_MASK  0b00000100
 #define LEFT_TILE_MASK 0b00001000
 
 Grid::Grid(const int *const width, const int *const height, const int *const seed)
@@ -104,7 +104,7 @@ int Grid::getCompatibleTileId(const int *const rowId, const int *const colId)
         auto tile_left = getGridData_ByRowAndColIndex(rowId, &tile_left_colId);
 
         while(!checkLeftCompatibility(&tile_left, &this->tileData[random_variable])
-              && !checkTopCompatibility(&tile_above, &this->tileData[random_variable]))
+              || !checkTopCompatibility(&tile_above, &this->tileData[random_variable]))
         {
             random_variable = rand() % sizeof(this->tileData);
         }
@@ -131,7 +131,7 @@ bool Grid::checkTopCompatibility(const char *const topTileData, const char *cons
 
 bool Grid::checkLeftCompatibility(const char *const leftTileData, const char *const currentTileData)
 {
-    auto shifted_left_tile_data = *leftTileData << 2;
+    auto shifted_left_tile_data = (*leftTileData) << 2;
     auto masked_left_tile_data = shifted_left_tile_data & LEFT_TILE_MASK;
     auto masked_current_tile_data = *currentTileData & LEFT_TILE_MASK;
 

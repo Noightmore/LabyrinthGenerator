@@ -1,15 +1,16 @@
-#include "mainwindow.h"
+#include <iostream>
 #include "qgraphicsitem.h"
+#include "../Headers/mainwindow.h"
 
 MainWindow::MainWindow(QWidget *parent)
-    : QMainWindow(parent),
-      view(&scene)
+    : QMainWindow(parent)//,
+      //view(&scene)
 {
     QVBoxLayout *layout = new QVBoxLayout(this);
     layout->addWidget(&view);
-    setWindowTitle("Labyrinth");
+    //setWindowTitle("Labyrinth");
 
-    QGraphicsPixmapItem background = QGraphicsPixmapItem(QPixmap(":/img/2.png"));
+    QGraphicsPixmapItem background = QGraphicsPixmapItem(QPixmap(":img/2.png"));
     scene.addItem(&background);
     background.setPos(0 ,0);
     background.setZValue(-0.1);
@@ -21,22 +22,22 @@ MainWindow::MainWindow(QWidget *parent)
     QGraphicsPixmapItem *obrazek;
 
     std::vector<QGraphicsPixmapItem*> obrazky = {
-        new QGraphicsPixmapItem(QPixmap(":/img/2.png")),
-        new QGraphicsPixmapItem(QPixmap(":/img/5.png")),
-        new QGraphicsPixmapItem(QPixmap(":/img/6.png")),
-        new QGraphicsPixmapItem(QPixmap(":/img/9.png")),
-        new QGraphicsPixmapItem(QPixmap(":/img/c.png")),
-        new QGraphicsPixmapItem(QPixmap(":/img/f.png"))
+        new QGraphicsPixmapItem(QPixmap(":img/2.png")),
+        new QGraphicsPixmapItem(QPixmap(":img/5.png")),
+        new QGraphicsPixmapItem(QPixmap(":img/6.png")),
+        new QGraphicsPixmapItem(QPixmap(":img/9.png")),
+        new QGraphicsPixmapItem(QPixmap(":img/c.png")),
+        new QGraphicsPixmapItem(QPixmap(":img/f.png"))
     };
 
 
-    Grid * grid = new Grid(&width, &height, &seed);
+    this->grid = new Grid(&width, &height, &seed);
 
     for (int i = 0; i < height; i++)
         {
             for (int j = 0; j < width; j++)
             {
-                cisloGridu = (int) grid->getGridData_ByRowAndColIndex(&i, &j);
+                cisloGridu = (int) this->grid->getGridData_ByRowAndColIndex(&i, &j);
                 switch(cisloGridu) {
                     case 2:
                         obrazek = obrazky[0];
@@ -61,15 +62,17 @@ MainWindow::MainWindow(QWidget *parent)
                 }
                 obrazek->setScale(0.2);
                 scene.addItem(obrazek);
+                //std::cout << "Obrazek cislo: " << obrazek << std::endl;
                 obrazek->setPos(i*200, j*200);
             }
         }
+        this->setCentralWidget(&view);
 }
 
 MainWindow::~MainWindow()
 {
-    if (layout != NULL) { delete layout; }
-    if (grid != NULL) { grid->~Grid(); }
+    delete layout;
+    if (grid != nullptr) { grid->~Grid(); }
     if (!obrazky.empty()) {
         for(int i = 0; i < 6; i++) {
             obrazky[i]->~QGraphicsPixmapItem();
