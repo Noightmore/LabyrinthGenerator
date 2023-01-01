@@ -51,7 +51,7 @@ int main([[maybe_unused]] int argc, char** argv)
     // Set the size of the grid and the size of each image
     const int gridSize = 4;
     const int imageSize = 200;
-    const int seed = 1242344;
+    const int seed = 12445335;
 
     Grid* grid = new Grid(&gridSize, &gridSize, &seed);
     QPixmap *obrazek;
@@ -84,41 +84,37 @@ int main([[maybe_unused]] int argc, char** argv)
         for (int j = 0; j < gridSize; j++) {
 
             auto cisloGridu =  grid->getGridData_ByRowAndColIndex(&i, &j);
-            std::cout << (int) cisloGridu << std::endl;
             switch(cisloGridu) {
-                case 2:
-                    obrazek = obrazky[0];
+                case 0x02:
+                    obrazek = obrazky.at(0);
                     break;
-                case 5:
-                    obrazek = obrazky[1];
+                case 0x05:
+                    obrazek = obrazky.at(1);
                     break;
-                case 6:
-                    obrazek = obrazky[2];
+                case 0x06:
+                    obrazek = obrazky.at(2);
                     break;
-                case 9:
-                    obrazek = obrazky[3];
+                case 0x09:
+                    obrazek = obrazky.at(3);
                     break;
-                case 12:
-                    obrazek = obrazky[4];
+                case 0x0C:
+                    obrazek = obrazky.at(4);
                     break;
-                case 15:
-                    obrazek = obrazky[5];
+                case 0x0F:
+                    obrazek = obrazky.at(5);
                     break;
                 default:
-                    obrazek = obrazky[0];
+                    obrazek = obrazky.at(0);
                     break;
             }
 
-            items[i][j].setPixmap(*obrazek);
 
-            items[i][j].setPos(i * imageSize, j * imageSize);
-            items[i][j].setScale(0.02);
-
-            // Add the item to the scene
-            scene.addItem(&items[i][j]);
+            items[j][i].setPixmap(*obrazek);
+            items[j][i].setPos(j * imageSize, i * imageSize);
+            items[j][i].setScale(0.02);
+            scene.addItem(&items[j][i]);
         }
     }
-    // Show the view
     view.show();
 
     grid->printGrid();

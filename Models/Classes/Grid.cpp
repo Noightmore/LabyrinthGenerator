@@ -110,6 +110,8 @@ int Grid::getCompatibleTileId(const int *const rowId, const int *const colId)
         }
         return random_variable;
     }
+
+    return random_variable;
 }
 
 
