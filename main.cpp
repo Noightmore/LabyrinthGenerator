@@ -49,11 +49,12 @@ int main([[maybe_unused]] int argc, char** argv)
     view.setScene(&scene);
 
     // Set the size of the grid and the size of each image
-    const int gridSize = 4;
-    const int imageSize = 200;
-    const int seed = 12445335;
+    int gridSizeW = std::stoi(argv[1]);
+    int gridSizeH = std::stoi(argv[2]);
+    int seed = std::stoi(argv[3]);
+    double zoom = std::stoi(argv[4]);
 
-    Grid* grid = new Grid(&gridSize, &gridSize, &seed);
+    Grid* grid = new Grid(&gridSizeW, &gridSizeH, &seed);
     QPixmap *obrazek;
 
     std::ifstream test("../img/2.png");
@@ -73,15 +74,15 @@ int main([[maybe_unused]] int argc, char** argv)
     };
 
     // Create a 2D array of QGraphicsPixmapItem objects
-    auto **items = new QGraphicsPixmapItem*[gridSize];
-    for (int i = 0; i < gridSize; i++)
+    auto **items = new QGraphicsPixmapItem*[gridSizeW];
+    for (int i = 0; i < gridSizeH; i++)
     {
-        items[i] = new QGraphicsPixmapItem[gridSize];
+        items[i] = new QGraphicsPixmapItem[gridSizeH];
     }
 
     // Add the items to the scene and position them in a grid
-    for (int i = 0; i < gridSize; i++) {
-        for (int j = 0; j < gridSize; j++) {
+    for (int i = 0; i < gridSizeW; i++) {
+        for (int j = 0; j < gridSizeH; j++) {
 
             auto cisloGridu =  grid->getGridData_ByRowAndColIndex(&i, &j);
             switch(cisloGridu) {
@@ -110,8 +111,8 @@ int main([[maybe_unused]] int argc, char** argv)
 
 
             items[j][i].setPixmap(*obrazek);
-            items[j][i].setPos(j * imageSize, i * imageSize);
-            items[j][i].setScale(0.02);
+            items[j][i].setPos(j * zoom, i * zoom);
+            items[j][i].setScale(zoom/10000.0);
             scene.addItem(&items[j][i]);
         }
     }
@@ -120,7 +121,6 @@ int main([[maybe_unused]] int argc, char** argv)
     grid->printGrid();
 
     return QApplication::exec();
-    return 0;
 }
 
 #pragma clang diagnostic pop
