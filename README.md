@@ -6,6 +6,16 @@ popis práce je popsán v commitech...
 - qt5 framework
 - cmake, gcc, ninja... (celý balíček nástrojů pro kompilaci c++ projektů)
 
+
+## aplikaci lze spustit následovně
+
+./LabyrinthGenerator <grid_width> <grid_height> <seed> <zoom>
+
+- grid_width = šířka pole
+- grid_height = výška pole
+- seed = seed, libovolné číslo
+- zoom = přiblížení pole (čím je číslo větší, tím vetší budou jednotlivé obrázky)
+
 Algoritmus je spíše generátor náhodných organizovaných patternů než li přímo bludiště...
 
 ![image](https://user-images.githubusercontent.com/91696187/210182310-3ae5bea2-bd2d-4eed-ab72-bfa42b8caa4d.png)
