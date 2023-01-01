@@ -9,7 +9,7 @@ popis práce je popsán v commitech...
 
 ## aplikaci lze spustit následovně
 
-./LabyrinthGenerator <grid_width> <grid_height> <seed> <zoom>
+### ./LabyrinthGenerator grid_width grid_height seed zoom
 
 - grid_width = šířka pole
 - grid_height = výška pole
