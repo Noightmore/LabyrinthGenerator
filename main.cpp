@@ -18,8 +18,8 @@ int main([[maybe_unused]] int argc, char** argv)
     view->setScene(scene);
 
     // Set the size of the grid and the size of each image
-    int gridSizeW = std::stoi(argv[1]);
-    int gridSizeH = std::stoi(argv[2]);
+    int gridSizeW = std::stoi(argv[2]);
+    int gridSizeH = std::stoi(argv[1]);
     int seed = std::stoi(argv[3]);
     double zoom = std::stoi(argv[4]);
 
@@ -74,11 +74,11 @@ int main([[maybe_unused]] int argc, char** argv)
                     break;
             }
 
-            items[i][j].setPixmap(*obrazek);
-            items[i][j].setPos(j * zoom, i * zoom);
+            (*(items + i)+j)->setPixmap(*obrazek);
+            (*(items + i)+j)->setPos(j * zoom, i * zoom);
             auto scale = zoom/10000.0;
-            items[i][j].setScale(scale);
-            scene->addItem(&items[i][j]);
+            (*(items + i)+j)->setScale(scale);
+            scene->addItem((*(items + i)+j));
         }
     }
     view->show();
