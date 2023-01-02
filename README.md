@@ -4,7 +4,7 @@ popis práce je popsán v commitech...
 
 ## Závislosti
 - qt5 framework
-- cmake, gcc, ninja... (celý balíček nástrojů pro kompilaci c++ projektů)
+- cmake, gcc, ninja, glibc, ld... (celý balíček nástrojů pro kompilaci, linkování a spouštění c++ projektů)
 
 
 ## aplikaci lze spustit následovně
