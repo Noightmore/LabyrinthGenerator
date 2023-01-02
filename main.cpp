@@ -2,51 +2,19 @@
 #pragma ide diagnostic ignored "cert-msc51-cpp"
 
 #include <iostream>
-#include "Models/Headers/Grid.h"
-
-#include "Models/Headers/mainwindow.h"
+#include "App/Headers/Grid.h"
 
 #include <QApplication>
-#include <fstream>
+#include <QGraphicsPixmapItem>
+#include <QGraphicsView>
 
 int main([[maybe_unused]] int argc, char** argv)
 {
-//    // alokace parametru na stack
-//    int width = std::stoi(argv[1]);
-//    int height = std::stoi(argv[2]);
-//    int seed = std::stoi(argv[3]);
-//
-//    std::cout << "Width: " << width << std::endl;
-//    std::cout << "Height: " << height << std::endl;
-//    std::cout << "seed: " << seed << std::endl;
-//
-//    // grid se alokuje na heap
-//    Grid * grid = new Grid(&width, &height, &seed);
-//
-//    // vypis gridu
-//    grid->printGrid();
-//
-//    // konec programu, jiz zadna data nepotrebujeme
-//    grid->~Grid();
-
-
-//    QApplication app(argc, argv);
-//    MainWindow window;
-//    //window.resize(320, 240);
-//    window.show();
-//    window.setWindowTitle(
-//            QApplication::translate("toplevel", "Labyrinth Generator"));
-//    return QApplication::exec();
-
-
-    auto *app = new QApplication(argc, argv);
-
-    // Create a QGraphicsView widget
-    QGraphicsView* view;
+    [[maybe_unused]] auto *app = new QApplication(argc, argv);
 
     // Create a QGraphicsScene and add it to the view
     auto* scene = new QGraphicsScene();
-    view = new QGraphicsView();
+    auto* view = new QGraphicsView();
     view->setScene(scene);
 
     // Set the size of the grid and the size of each image
@@ -58,32 +26,28 @@ int main([[maybe_unused]] int argc, char** argv)
     Grid* grid = new Grid(&gridSizeW, &gridSizeH, &seed);
     QPixmap *obrazek;
 
-    std::ifstream test("../img/2.png");
-    if (!test)
-    {
-        std::cout << "The file doesn't exist" << std::endl;
-    }
-
     // Load the images from file
     std::vector<QPixmap*> obrazky = {
-            new QPixmap("../img/2.png"),
-            new QPixmap("../img/5.png"),
-            new QPixmap("../img/6.png"),
-            new QPixmap("../img/9.png"),
-            new QPixmap("../img/c.png"),
-            new QPixmap("../img/f.png")
+            new QPixmap("../Img/2.png"),
+            new QPixmap("../Img/5.png"),
+            new QPixmap("../Img/6.png"),
+            new QPixmap("../Img/9.png"),
+            new QPixmap("../Img/c.png"),
+            new QPixmap("../Img/f.png")
     };
 
     // Create a 2D array of QGraphicsPixmapItem objects
-    auto **items = new QGraphicsPixmapItem*[gridSizeW];
-    for (int i = 0; i < gridSizeH; i++)
+    auto **items = new QGraphicsPixmapItem*[gridSizeH];
+    for (int i = 0; i < gridSizeW; i++)
     {
-        items[i] = new QGraphicsPixmapItem[gridSizeH];
+        items[i] = new QGraphicsPixmapItem[gridSizeW];
     }
 
     // Add the items to the scene and position them in a grid
-    for (int i = 0; i < gridSizeW; i++) {
-        for (int j = 0; j < gridSizeH; j++) {
+    for (int i = 0; i < gridSizeH; i++)
+    {
+        for (int j = 0; j < gridSizeW; j++)
+        {
 
             auto cisloGridu =  grid->getGridData_ByRowAndColIndex(&i, &j);
             switch(cisloGridu) {
@@ -110,17 +74,15 @@ int main([[maybe_unused]] int argc, char** argv)
                     break;
             }
 
-
-            items[j][i].setPixmap(*obrazek);
-            items[j][i].setPos(j * zoom, i * zoom);
-            items[j][i].setScale(zoom/10000.0);
-            scene->addItem(&items[j][i]);
+            items[i][j].setPixmap(*obrazek);
+            items[i][j].setPos(j * zoom, i * zoom);
+            auto scale = zoom/10000.0;
+            items[i][j].setScale(scale);
+            scene->addItem(&items[i][j]);
         }
     }
     view->show();
-
-    grid->printGrid();
-
+    //grid->printGrid();
     auto end = QApplication::exec();
     return end;
 }
