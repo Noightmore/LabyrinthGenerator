@@ -39,14 +39,15 @@ int main([[maybe_unused]] int argc, char** argv)
 //    return QApplication::exec();
 
 
-    QApplication app(argc, argv);
+    auto *app = new QApplication(argc, argv);
 
     // Create a QGraphicsView widget
-    QGraphicsView view;
+    QGraphicsView* view;
 
     // Create a QGraphicsScene and add it to the view
-    QGraphicsScene scene;
-    view.setScene(&scene);
+    auto* scene = new QGraphicsScene();
+    view = new QGraphicsView();
+    view->setScene(scene);
 
     // Set the size of the grid and the size of each image
     int gridSizeW = std::stoi(argv[1]);
@@ -113,14 +114,15 @@ int main([[maybe_unused]] int argc, char** argv)
             items[j][i].setPixmap(*obrazek);
             items[j][i].setPos(j * zoom, i * zoom);
             items[j][i].setScale(zoom/10000.0);
-            scene.addItem(&items[j][i]);
+            scene->addItem(&items[j][i]);
         }
     }
-    view.show();
+    view->show();
 
     grid->printGrid();
 
-    return QApplication::exec();
+    auto end = QApplication::exec();
+    return end;
 }
 
 #pragma clang diagnostic pop
