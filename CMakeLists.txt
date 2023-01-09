@@ -10,6 +10,8 @@ set(CMAKE_CXX_STANDARD 23)
 find_package(Qt5Widgets REQUIRED)
 set(SOURCE_FILES main.cpp App/Classes/Grid.cpp App/Headers/Grid.h App/Headers/mainwindow.h App/Classes/mainwindow.cpp) #Tools/rnd_by_seed.asm
 set(CMAKE_AUTOMOC ON)
+set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -O3 -ggdb")
+#set(CMAKE_FEATURES "${CMAKE_FEATURES} nostrip")
 
 add_executable(LabyrinthGenerator ${SOURCE_FILES})
 #target_link_options(LabyrinthGenerator PRIVATE /lib64/ld-linux-x86-64.so.2)
